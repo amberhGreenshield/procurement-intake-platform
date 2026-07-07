@@ -1,11 +1,7 @@
 import { useState } from "react";
 import Header from "../components/Header";
-<<<<<<< HEAD
-import { Case, INITIAL_CASES, NEXT_STAGE, NEXT_LABEL, Stage,  } from "../data/mockCases";
-=======
 import ViewSwitcher, { AppViewMode } from "../components/ViewSwitcher";
 import { Case, NEXT_STAGE, NEXT_LABEL, Stage } from "../data/mockCases";
->>>>>>> 4c20bbdb3c4aeddd96abbb5d6b09c5ef78e608c4
 
 type TabKey = Stage;
 
@@ -174,76 +170,6 @@ export default function TeamDashboard({
             >
               No cases in this stage.
             </div>
-<<<<<<< HEAD
-          )}
-
-          {filteredCases.map((c, i) => {
-            const nextStage = NEXT_STAGE[c.stage];
-            const isMoving = recentlyMoved === c.id;
-
-            return (
-              <div
-                key={c.id}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  padding: "18px 24px",
-                  borderBottom:
-                    i < filteredCases.length - 1 ? "1px solid #f1f5f9" : "none",
-                  background: isMoving ? "#f0fdf4" : "transparent",
-                  transition: "background 0.4s",
-                  gap: 16,
-                }}
-              >
-                <span
-                  onClick={() => onOpenCase?.(c)}
-                  style={{
-                    fontWeight: 700,
-                    fontSize: 14,
-                    color: "#0f4c3a",
-                    minWidth: 60,
-                    cursor: onOpenCase ? "pointer" : "default",
-                    textDecoration: onOpenCase ? "underline" : "none",
-                  }}
-                >
-                  {c.id}
-                </span>
-                <span
-                  onClick={() => onOpenCase?.(c)}
-                  style={{
-                    flex: 1,
-                    fontSize: 15,
-                    color: "#1e293b",
-                    fontWeight: 500,
-                    cursor: onOpenCase ? "pointer" : "default",
-                  }}
-                >
-                  {c.vendorName}
-                </span>
-                {c.riskTier && c.riskTier.length > 0 && (
-                  <div style={{ display: "flex", gap: 6 }}>
-                    {c.riskTier.split(",").map((f) => (
-                      <span
-                        key={f}
-                        style={{
-                          fontSize: 11,
-                          background: "#fef3c7",
-                          color: "#92400e",
-                          borderRadius: 6,
-                          padding: "2px 8px",
-                          fontWeight: 500,
-                        }}
-                      >
-                        {f.trim()}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                <div style={{ minWidth: 110, textAlign: "right" }}>
-                  {nextStage ? (
-                    <button
-                      onClick={() => advanceCase(c.id)}
-=======
           ) : (
             <table
               style={{
@@ -269,7 +195,6 @@ export default function TeamDashboard({
                   ].map((h) => (
                     <th
                       key={h}
->>>>>>> 4c20bbdb3c4aeddd96abbb5d6b09c5ef78e608c4
                       style={{
                         textAlign: "left",
                         color: "#fff",
@@ -361,27 +286,7 @@ export default function TeamDashboard({
                       <td style={{ padding: "16px", color: "#334155", whiteSpace: "nowrap" }}>
                         {c.onboardingDuration ?? "—"}
                       </td>
-                      <td style={{ padding: "16px", textAlign: "right", whiteSpace: "nowrap" }}>
-                        {c.formsPending && c.formsPending.length > 0 && (
-                          <div style={{ display: "flex", gap: 6, marginBottom: 8, justifyContent: "flex-end" }}>
-                            {c.formsPending.map((f) => (
-                              <span
-                                key={f}
-                                style={{
-                                  fontSize: 11,
-                                  background: "#fef3c7",
-                                  color: "#92400e",
-                                  borderRadius: 6,
-                                  padding: "2px 8px",
-                                  fontWeight: 500,
-                                }}
-                              >
-                                {f}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                        {nextStage ? (
+                      <td style={{ padding: "16px", textAlign: "right", whiteSpace: "nowrap" }}>                        {nextStage ? (
                           <button
                             onClick={() => advanceCase(c.id)}
                             style={{

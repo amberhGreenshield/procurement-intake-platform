@@ -10,10 +10,11 @@ export interface Case {
   id: string;
   vendorName: string;
   stage: Stage;
-  formsPending?: string[];
+  riskTier?: string;
   description?: string;
   completedForms?: Assessment[];
   ourAssessments?: Assessment[];
+  currentlyAssignedTo?: string[];
 }
 
 export const INITIAL_CASES: Case[] = [
@@ -21,38 +22,42 @@ export const INITIAL_CASES: Case[] = [
     id: "#1245",
     vendorName: "Figma",
     stage: "inProgress",
-    formsPending: ["NDA", "Security Review"],
+    riskTier: "Tier 1",
     description:
       "Here is an auto populated description of the vendor product that will come from the \"High Level Description\" box to be filled out in the first SharePoint intake form.",
     completedForms: [
-      { id: "cf1", label: "PDF upload of the risk tier" },
-      { id: "cf2", label: "PDF upload of the risk tier" },
-      { id: "cf3", label: "PDF upload of the risk tier" },
-      { id: "cf4", label: "PDF upload of the risk tier" },
-      { id: "cf5", label: "PDF upload of the risk tier" },
+      { id: "cf1", label: "word doc (vendor intake form)" },
+      { id: "cf2", label: "word doc (PIA)" },
+      { id: "cf3", label: "word doc (initial TPRM->risk tier)" },
+      { id: "cf4", label: "word doc (Data & AI Impact Assessment)" },
     ],
     ourAssessments: [
-      { id: "oa1", label: "PDF upload of the risk tier" },
-      { id: "oa2", label: "PDF upload of the risk tier" },
-      { id: "oa3", label: "PDF upload of the risk tier" },
-      { id: "oa4", label: "PDF upload of the risk tier" },
+      { id: "oa1", label: "copy of upguard Security Governance questionnaire" },
+ 
     ],
   },
   {
     id: "#1246",
     vendorName: "Claude",
     stage: "new",
-    formsPending: ["MSA", "Intake Form"],
-    description: "Claude is an AI assistant by Anthropic.",
-    completedForms: [],
-    ourAssessments: [],
+    riskTier: "Tier 1",
+    description: "Here is an auto populated description of the vendor product that will come from the \"High Level Description\" box to be filled out in the first SharePoint intake form.",
+    completedForms: [
+      { id: "cf1", label: "word doc (vendor intake form)" },
+      { id: "cf2", label: "word doc (PIA)" },
+      { id: "cf3", label: "word doc (initial TPRM->risk tier)" },
+      { id: "cf4", label: "word doc (Data & AI Impact Assessment)" },
+    ],
+    ourAssessments: [
+      { id: "oa1", label: "copy of upguard Security Governance questionnaire" },
+    ],
   },
   {
     id: "#1247",
     vendorName: "Notion",
     stage: "new",
-    formsPending: ["NDA"],
-    description: "Notion is a productivity and note-taking platform.",
+    riskTier: "Tier 2",
+    description: "Here is an auto populated description of the vendor product that will come from the \"High Level Description\" box to be filled out in the first SharePoint intake form.",
     completedForms: [],
     ourAssessments: [],
   },
@@ -60,26 +65,50 @@ export const INITIAL_CASES: Case[] = [
     id: "#1248",
     vendorName: "Salesforce",
     stage: "completed",
-    description: "Salesforce is a CRM platform.",
-    completedForms: [],
-    ourAssessments: [],
+    riskTier: "Tier 2",
+    description: "Here is an auto populated description of the vendor product that will come from the \"High Level Description\" box to be filled out in the first SharePoint intake form.",
+    completedForms: [
+      { id: "cf1", label: "word doc (vendor intake form)" },
+      { id: "cf2", label: "word doc (PIA)" },
+      { id: "cf3", label: "word doc (initial TPRM->risk tier)" },
+      { id: "cf4", label: "word doc (Data & AI Impact Assessment)" },
+    ],
+    ourAssessments: [
+      { id: "oa1", label: "copy of upguard Security Governance questionnaire" },
+    ],
+    currentlyAssignedTo: ["PVM-agreement review/negotiations"],
   },
   {
     id: "#1249",
     vendorName: "Stripe",
     stage: "inProgress",
-    formsPending: ["Security Review"],
-    description: "Stripe is a payments infrastructure company.",
-    completedForms: [],
-    ourAssessments: [],
+    riskTier: "Tier 1",
+    description: "Here is an auto populated description of the vendor product that will come from the \"High Level Description\" box to be filled out in the first SharePoint intake form.",
+   completedForms: [
+      { id: "cf1", label: "word doc (vendor intake form)" },
+      { id: "cf2", label: "word doc (PIA)" },
+      { id: "cf3", label: "word doc (initial TPRM->risk tier)" },
+      { id: "cf4", label: "word doc (Data & AI Impact Assessment)" },
+    ],
+    ourAssessments: [
+      { id: "oa1", label: "copy of upguard Security Governance questionnaire" },
+    ],
   },
   {
     id: "#1250",
     vendorName: "Slack",
     stage: "completed",
-    description: "Slack is a team messaging platform.",
-    completedForms: [],
-    ourAssessments: [],
+    description: "Here is an auto populated description of the vendor product that will come from the \"High Level Description\" box to be filled out in the first SharePoint intake form.",
+    completedForms: [
+      { id: "cf1", label: "word doc (vendor intake form)" },
+      { id: "cf2", label: "word doc (PIA)" },
+      { id: "cf3", label: "word doc (initial TPRM->risk tier)" },
+      { id: "cf4", label: "word doc (Data & AI Impact Assessment)" },
+    ],
+    ourAssessments: [
+      { id: "oa1", label: "copy of upguard Security Governance questionnaire" },
+    ],
+    currentlyAssignedTo: ["Security Architecture"],
   },
 ];
 

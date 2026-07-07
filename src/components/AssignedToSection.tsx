@@ -1,10 +1,15 @@
-interface DescriptionCardProps {
-  text?: string;
+import AssessmentCard from "./AssessmentCard";
+import { Assessment } from "../data/mockCases";
+import "../data/mockCases";
+
+
+interface AssignedToSectionProps {
+  assignedTo: string;
 }
 
-export default function DescriptionCard({ text }: DescriptionCardProps) {
+export default function AssignedToSection({ assignedTo }: AssignedToSectionProps) {
   return (
-    <div style={{ width: 220, flexShrink: 0 }}>
+    <div style={{ flex: 1 }}>
       <div
         style={{
           background: "#0f4c3a",
@@ -16,20 +21,19 @@ export default function DescriptionCard({ text }: DescriptionCardProps) {
           textAlign: "center",
         }}
       >
-        Description
+        Assigned To
       </div>
       <div
         style={{
           background: "#f1f5f9",
           borderRadius: "0 0 8px 8px",
-          padding: "16px",
-          fontSize: 12,
-          color: "#475569",
-          lineHeight: 1.7,
+          padding: 16,
           minHeight: 200,
         }}
       >
-        {text ?? "Here is a populated discription."}
+        <p style={{ margin: 0, color: "#334155", fontSize: 13 }}>
+          {assignedTo}
+        </p>
       </div>
     </div>
   );

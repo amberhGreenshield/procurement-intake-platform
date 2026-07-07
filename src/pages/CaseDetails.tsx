@@ -50,6 +50,12 @@ export default function CaseDetails({ case: c, onBack }: CaseDetailsProps) {
         />
       </div>
 
+      {/*Assigned to section */}
+      <AssignedToSection assignedTo={c.assignedTo} />
+    </div>
+  );
+}
+
       {/* Help button */}
       <div style={{ position: "fixed", bottom: 24, right: 24 }}>
         <button

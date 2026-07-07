@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Header from "../components/Header";
-import { Case, INITIAL_CASES, NEXT_STAGE, NEXT_LABEL, Stage } from "../data/mockCases";
+import { Case, INITIAL_CASES, NEXT_STAGE, NEXT_LABEL, Stage,  } from "../data/mockCases";
 
 type TabKey = Stage;
 
@@ -193,9 +193,9 @@ export default function TeamDashboard({
                 >
                   {c.vendorName}
                 </span>
-                {c.formsPending && c.formsPending.length > 0 && (
+                {c.riskTier && c.riskTier.length > 0 && (
                   <div style={{ display: "flex", gap: 6 }}>
-                    {c.formsPending.map((f) => (
+                    {c.riskTier.split(",").map((f) => (
                       <span
                         key={f}
                         style={{
@@ -207,7 +207,7 @@ export default function TeamDashboard({
                           fontWeight: 500,
                         }}
                       >
-                        {f}
+                        {f.trim()}
                       </span>
                     ))}
                   </div>

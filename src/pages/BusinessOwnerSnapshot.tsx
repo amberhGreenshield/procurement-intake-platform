@@ -2,9 +2,8 @@ import Header from "../components/Header";
 import ViewSwitcher, { AppViewMode } from "../components/ViewSwitcher";
 import { Case } from "../data/mockCases";
 
-interface TeamSnapshotProps {
+interface BusinessOwnerSnapshotProps {
   userName?: string;
-  teamName?: string;
   cases: Case[];
   onOpenDashboard: () => void;
   viewMode: AppViewMode;
@@ -12,25 +11,23 @@ interface TeamSnapshotProps {
 }
 
 const recentlyCompleted = [
-  { id: "#2468", note: "Closed today" },
-  { id: "#2462", note: "Closed yesterday" },
+  { id: "#3265", note: "Closed this week" },
+  { id: "#3241", note: "Closed last month" },
 ];
 
-const newCaseNotifications = [
-  { id: "#2376", vendorName: "Vendor Name" },
-];
-
-export default function TeamSnapshot({
+export default function BusinessOwnerSnapshot({
   userName = "Name",
-  teamName = "InfoSec",
   cases,
   onOpenDashboard,
   viewMode,
   onChangeViewMode,
-}: TeamSnapshotProps) {
+}: BusinessOwnerSnapshotProps) {
   const openCases = cases.filter((c) => c.stage !== "completed").length;
   const newCases = cases.filter((c) => c.stage === "new").length;
   const closed = cases.filter((c) => c.stage === "completed").length;
+
+  // A handful of cases to preview in the "Case Overview" section.
+  const overviewCases = cases.slice(0, 4);
 
   return (
     <div
@@ -44,7 +41,7 @@ export default function TeamSnapshot({
         title={`Welcome Back, ${userName} 👋`}
         rightContent={
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <span style={{ fontSize: 14, opacity: 0.85 }}>Team: {teamName}</span>
+            <span style={{ fontSize: 14, opacity: 0.85 }}>Business Owner</span>
             <ViewSwitcher mode={viewMode} onChange={onChangeViewMode} />
           </div>
         }
@@ -152,7 +149,7 @@ export default function TeamSnapshot({
         </div>
       </div>
 
-      {/* New Cases */}
+      {/* Case Overview (replaces "New Cases" on the team-facing page) */}
       <div style={{ padding: "24px 32px" }}>
         <div
           style={{
@@ -165,7 +162,7 @@ export default function TeamSnapshot({
             textAlign: "center",
           }}
         >
-          New Cases
+          Case Overview
         </div>
         <div
           style={{
@@ -174,22 +171,36 @@ export default function TeamSnapshot({
             padding: "16px 20px",
           }}
         >
-          {newCaseNotifications.map((c) => (
-            <div
-              key={c.id}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                fontSize: 13,
-                color: "#334155",
-                padding: "6px 0",
-              }}
-            >
-              <span style={{ fontSize: 18, color: "#0f4c3a" }}>🔔</span>
-              New Case {c.id} {c.vendorName} has been added to the dashboard
+          {overviewCases.length === 0 ? (
+            <div style={{ fontSize: 13, color: "#64748b", padding: "6px 0" }}>
+              No cases to show.
             </div>
-          ))}
+          ) : (
+            overviewCases.map((c) => (
+              <div
+                key={c.id}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 16,
+                  fontSize: 13,
+                  color: "#334155",
+                  padding: "8px 0",
+                  borderBottom: "1px solid #d7dde0",
+                }}
+              >
+                <span style={{ fontWeight: 700, color: "#0f4c3a", minWidth: 60 }}>
+                  {c.id}
+                </span>
+                <span style={{ flex: 1, fontWeight: 500 }}>{c.vendorName}</span>
+                <span style={{ color: "#64748b" }}>
+                  {c.stage === "completed"
+                    ? c.currentState ?? "Complete"
+                    : c.currentState ?? "—"}
+                </span>
+              </div>
+            ))
+          )}
         </div>
       </div>
 

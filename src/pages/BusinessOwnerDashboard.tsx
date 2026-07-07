@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import ViewSwitcher, { AppViewMode } from "../components/ViewSwitcher";
-import { Case, NEXT_STAGE, NEXT_LABEL, Stage } from "../data/mockCases";
+import { Case, Stage } from "../data/mockCases";
 
 type TabKey = Stage;
 
@@ -17,27 +17,22 @@ const RISK_COLORS: Record<string, { bg: string; color: string }> = {
   High: { bg: "#fee2e2", color: "#991b1b" },
 };
 
-interface TeamDashboardProps {
-  teamName?: string;
+interface BusinessOwnerDashboardProps {
   onBack?: () => void;
   onOpenCase?: (c: Case) => void;
   cases: Case[];
-  setCases: React.Dispatch<React.SetStateAction<Case[]>>;
   viewMode: AppViewMode;
   onChangeViewMode: (mode: AppViewMode) => void;
 }
 
-export default function TeamDashboard({
-  teamName = "InfoSec",
+export default function BusinessOwnerDashboard({
   onBack,
   onOpenCase,
   cases,
-  setCases,
   viewMode,
   onChangeViewMode,
-}: TeamDashboardProps) {
+}: BusinessOwnerDashboardProps) {
   const [activeTab, setActiveTab] = useState<TabKey>("new");
-  const [recentlyMoved, setRecentlyMoved] = useState<string | null>(null);
 
   const filteredCases = cases.filter((c) => c.stage === activeTab);
 
@@ -46,28 +41,6 @@ export default function TeamDashboard({
     inProgress: cases.filter((c) => c.stage === "inProgress").length,
     completed: cases.filter((c) => c.stage === "completed").length,
   };
-
-  function advanceCase(id: string) {
-    setCases((prev) =>
-      prev.map((c) => {
-        if (c.id !== id) return c;
-        const next = NEXT_STAGE[c.stage];
-        return next ? { ...c, stage: next } : c;
-      })
-    );
-    setRecentlyMoved(id);
-    setTimeout(() => setRecentlyMoved(null), 1200);
-  }
-
-  // Current State: while the case is with this team (new / in progress) the
-  // current state is this team's name. Once it's completed here, it has
-  // moved on to whichever other team now owns it.
-  function currentStateFor(c: Case): string {
-    if (c.stage === "completed") {
-      return c.completedByTeam ?? "Procurement Ops";
-    }
-    return teamName;
-  }
 
   return (
     <div
@@ -79,7 +52,7 @@ export default function TeamDashboard({
     >
       <Header
         title="Team Dashboard"
-        subtitle={`Team: ${teamName}`}
+        subtitle="Business Owner"
         onBack={onBack}
         rightContent={<ViewSwitcher mode={viewMode} onChange={onChangeViewMode} />}
       />
@@ -211,8 +184,6 @@ export default function TeamDashboard({
               </thead>
               <tbody>
                 {filteredCases.map((c, i) => {
-                  const nextStage = NEXT_STAGE[c.stage];
-                  const isMoving = recentlyMoved === c.id;
                   const risk = c.riskTier ? RISK_COLORS[c.riskTier] : null;
 
                   return (
@@ -221,8 +192,6 @@ export default function TeamDashboard({
                       style={{
                         borderBottom:
                           i < filteredCases.length - 1 ? "1px solid #f1f5f9" : "none",
-                        background: isMoving ? "#f0fdf4" : "transparent",
-                        transition: "background 0.4s",
                       }}
                     >
                       <td
@@ -278,7 +247,7 @@ export default function TeamDashboard({
                         )}
                       </td>
                       <td style={{ padding: "16px", color: "#334155", whiteSpace: "nowrap" }}>
-                        {currentStateFor(c)}
+                        {c.currentState ?? "—"}
                       </td>
                       <td style={{ padding: "16px", color: "#334155", whiteSpace: "nowrap" }}>
                         {c.nextReview ?? "—"}
@@ -287,57 +256,32 @@ export default function TeamDashboard({
                         {c.onboardingDuration ?? "—"}
                       </td>
                       <td style={{ padding: "16px", textAlign: "right", whiteSpace: "nowrap" }}>
-                        {c.formsPending && c.formsPending.length > 0 && (
-                          <div style={{ display: "flex", gap: 6, marginBottom: 8, justifyContent: "flex-end" }}>
-                            {c.formsPending.map((f) => (
-                              <span
-                                key={f}
-                                style={{
-                                  fontSize: 11,
-                                  background: "#fef3c7",
-                                  color: "#92400e",
-                                  borderRadius: 6,
-                                  padding: "2px 8px",
-                                  fontWeight: 500,
-                                }}
-                              >
-                                {f}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                        {nextStage ? (
-                          <button
-                            onClick={() => advanceCase(c.id)}
-                            style={{
-                              padding: "8px 22px",
-                              borderRadius: 8,
-                              border: "1.5px solid #cbd5e1",
-                              background: "#f8fafc",
-                              color: "#334155",
-                              fontWeight: 600,
-                              fontSize: 13,
-                              cursor: "pointer",
-                              transition: "all 0.15s",
-                            }}
-                            onMouseEnter={(e) => {
-                              (e.currentTarget as HTMLButtonElement).style.background = "#0f4c3a";
-                              (e.currentTarget as HTMLButtonElement).style.color = "#fff";
-                              (e.currentTarget as HTMLButtonElement).style.borderColor = "#0f4c3a";
-                            }}
-                            onMouseLeave={(e) => {
-                              (e.currentTarget as HTMLButtonElement).style.background = "#f8fafc";
-                              (e.currentTarget as HTMLButtonElement).style.color = "#334155";
-                              (e.currentTarget as HTMLButtonElement).style.borderColor = "#cbd5e1";
-                            }}
-                          >
-                            {NEXT_LABEL[c.stage]}
-                          </button>
-                        ) : (
-                          <span style={{ fontSize: 13, color: "#22c55e", fontWeight: 600 }}>
-                            ✓ Done
-                          </span>
-                        )}
+                        <button
+                          onClick={() => onOpenCase?.(c)}
+                          style={{
+                            padding: "8px 22px",
+                            borderRadius: 8,
+                            border: "1.5px solid #cbd5e1",
+                            background: "#f8fafc",
+                            color: "#334155",
+                            fontWeight: 600,
+                            fontSize: 13,
+                            cursor: "pointer",
+                            transition: "all 0.15s",
+                          }}
+                          onMouseEnter={(e) => {
+                            (e.currentTarget as HTMLButtonElement).style.background = "#0f4c3a";
+                            (e.currentTarget as HTMLButtonElement).style.color = "#fff";
+                            (e.currentTarget as HTMLButtonElement).style.borderColor = "#0f4c3a";
+                          }}
+                          onMouseLeave={(e) => {
+                            (e.currentTarget as HTMLButtonElement).style.background = "#f8fafc";
+                            (e.currentTarget as HTMLButtonElement).style.color = "#334155";
+                            (e.currentTarget as HTMLButtonElement).style.borderColor = "#cbd5e1";
+                          }}
+                        >
+                          View Details
+                        </button>
                       </td>
                     </tr>
                   );
